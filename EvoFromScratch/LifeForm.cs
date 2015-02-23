@@ -21,6 +21,7 @@ namespace EvoFromScratch
         DateTime BornTime;
         DateTime PregnantTime;
         public char Gender;
+        public int ViewDistance;
 
 
         int Width;
@@ -32,7 +33,7 @@ namespace EvoFromScratch
         {
             this.Width = Width;
             this.Hight = Hight;
-            this.ID = _Coloni.Count + 1;
+            this.ID = _Coloni.Count;
             this.Age = 1;
             this.CurrentLocX = rnd.Next(0, Width);
             this.CurrentLocY = rnd.Next(0, Hight);
@@ -43,7 +44,8 @@ namespace EvoFromScratch
             this.IsPregnant = false;
             this.IsAlive = true;
             char[] _gender = new char[2] { 'M', 'F' };
-            this.Gender = _gender[rnd.Next(0,2)];
+            this.Gender = (char)_gender[rnd.Next(0,2)];
+            this.ViewDistance = rnd.Next(50, 70);
         }
 
         public void Move()
@@ -66,17 +68,17 @@ namespace EvoFromScratch
         public void Born(List<LifeForm> _Coloni, LifeForm lf)
         {
             TimeSpan T = DateTime.Now - lf.PregnantTime;
-            if ((T.TotalSeconds) >= 1)
+            if ((T.TotalSeconds) >= 1 && lf.IsPregnant == true)
             {
-                Random X = new Random();
-                int ChildCount = X.Next(1, 2);
+                int ChildCount = rnd.Next(1, 4);
                 for (int i = 0; i < ChildCount; i++)
                 {
                     _Coloni.Add(new LifeForm(_Coloni, lf.Width, lf.Hight));
                     _Coloni[_Coloni.Count - 1].CurrentLocX = lf.CurrentLocX;
                     _Coloni[_Coloni.Count - 1].CurrentLocY = lf.CurrentLocY;
+                    lf.IsPregnant = false;
                 }
-            }   
+            }
         }
 
         public void Search(List<LifeForm> _Coloni, LifeForm lf)
@@ -85,11 +87,11 @@ namespace EvoFromScratch
             {
                 foreach (LifeForm lf2 in _Coloni)
                 {
-                    if (lf2.Age > 15 && lf.ID != lf2.ID && lf2.IsPregnant != true 
+                    if (lf2.Age > 15 && lf.ID != lf2.ID && lf2.IsPregnant != true
                         && lf2.IsAlive == true && lf.Gender != lf2.Gender)
                     {
-                        if (Math.Abs(lf.CurrentLocX - lf2.CurrentLocX) < 50 &&
-                            Math.Abs(lf.CurrentLocY - lf2.CurrentLocY) < 50)
+                        if (Math.Abs(lf.CurrentLocX - lf2.CurrentLocX) < 100 &&
+                            Math.Abs(lf.CurrentLocY - lf2.CurrentLocY) < 100)
                         {
                             if (lf.Gender == 'F')
                             {
@@ -101,6 +103,7 @@ namespace EvoFromScratch
                                 lf2.IsPregnant = true;
                                 lf2.PregnantTime = DateTime.Now;
                             }
+                            break;
                         }
                     }
                 }
@@ -124,7 +127,7 @@ namespace EvoFromScratch
         public void Death (List<LifeForm> _Coloni, LifeForm lf)
         {
             TimeSpan T = DateTime.Now - lf.BornTime;
-            if ((T.TotalSeconds) > 30)
+            if ((T.TotalSeconds) > 25)
             {
                 lf.IsAlive = false;
             }

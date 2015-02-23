@@ -2,3 +2,4 @@ C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\bin\Debug\EvoFromScratch.ex
 C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\bin\Debug\EvoFromScratch.pdb
 C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.exe
 C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.pdb
+C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.csprojResolveAssemblyReference.cache

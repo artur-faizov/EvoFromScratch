@@ -8,7 +8,7 @@ namespace EvoFromScratch
 {
     public class Draw
     {
-        Pen DrawPen;
+        Pen PregnantePen;
         Pen MalePen;
         Pen FemalePen;
         Pen ChildMalePen;
@@ -20,7 +20,7 @@ namespace EvoFromScratch
         
         public Draw(System.Windows.Forms.PictureBox _PictureBox)
         {
-            this.DrawPen = new Pen(Color.Black, 1);
+            this.PregnantePen = new Pen(Color.Green, 2);
             this.MalePen = new Pen(Color.Blue, 2);
             this.FemalePen = new Pen(Color.Peru, 2);
             this.ChildMalePen = new Pen(Color.Blue, 1);
@@ -41,18 +41,26 @@ namespace EvoFromScratch
             }
             else if (_lf.Age < 15 && _lf.Gender == 'F')
             {
-                g.DrawRectangle(ErasPenChiled, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                g.DrawRectangle(ChildFemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                    g.DrawRectangle(ErasPenChiled, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                    g.DrawRectangle(ChildFemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
             } 
             else if (_lf.Gender == 'M')
             {
-                g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                g.DrawRectangle(MalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                    g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                    g.DrawRectangle(MalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
             }
             else if (_lf.Gender == 'F')
             {
-                g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                g.DrawRectangle(FemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                if (_lf.IsPregnant == true)
+                {
+                    g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                    g.DrawRectangle(PregnantePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                }
+                else
+                {
+                    g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                    g.DrawRectangle(FemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                }
             }
         }
 
@@ -62,5 +70,6 @@ namespace EvoFromScratch
             g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
             g.DrawRectangle(DeathPen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
         }
+
     }
 }

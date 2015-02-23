@@ -18,12 +18,11 @@ namespace EvoFromScratch
         public System.Windows.Forms.Timer GrowTime;
 
         public List<LifeForm> Coloni = new List<LifeForm>();
-
+       
         public MainForm(int _Width, int _Hight, int _LifeSpeed)
         {
             this.Width_ = _Width;
             this.Hight_ = _Hight;
-            
             
             //Moving Timer
             this.LifeTime = new System.Windows.Forms.Timer();
@@ -59,6 +58,7 @@ namespace EvoFromScratch
 
         public void LifeTime_Tick(Object sender, EventArgs e)
         {
+            //start coloni
             if (Coloni.Count == 0)
             {
                 for (int i = 0; i < 10; i++)
@@ -67,25 +67,15 @@ namespace EvoFromScratch
                 } 
             }
 
+            //
             Draw DrawObject = new Draw(PictureBox1);
-            foreach (LifeForm lf in Coloni)
-            {
-                lf.Death(Coloni, lf);
-                if (lf.IsAlive == true)
-                {
-                    DrawObject.DrawLf(lf);
-                    lf.Move();
-                } else {
-                    DrawObject.DrawDeath(lf);    
-                }
-            }
-        }
+            
 
-        public void GrowTime_Tick(Object sender, EventArgs e)
-        {
             for (int i = 0; i < Coloni.Count; i++)
             {
+
                 Coloni[i].Search(Coloni, Coloni[i]);
+
                 if (Coloni[i].IsPregnant == true)
                 {
                     Coloni[i].Born(Coloni, Coloni[i]);
@@ -93,6 +83,27 @@ namespace EvoFromScratch
                 Coloni[i].Growing(Coloni[i]);
                 Coloni[i].RemoveBody(Coloni, Coloni[i]);
             }
+
+            foreach (LifeForm lf in Coloni)
+            {
+                lf.Death(Coloni, lf);
+                if (lf.IsAlive == true)
+                {
+                    DrawObject.DrawLf(lf);
+                    lf.Move();
+                }
+                else
+                {
+                    DrawObject.DrawDeath(lf);
+                }
+            }
+
+        }
+
+        public void GrowTime_Tick(Object sender, EventArgs e)
+        {
+
+
         }
 
     }
