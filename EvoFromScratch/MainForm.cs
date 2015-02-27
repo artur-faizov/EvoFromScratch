@@ -61,7 +61,7 @@ namespace EvoFromScratch
             //start coloni
             if (Coloni.Count == 0)
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     this.Coloni.Add(new LifeForm(Coloni, Width_, Hight_));
                 } 
@@ -76,10 +76,10 @@ namespace EvoFromScratch
 
                 Coloni[i].Search(Coloni, Coloni[i]);
 
-                if (Coloni[i].IsPregnant == true)
+                /*if (Coloni[i].IsPregnant == true)
                 {
                     Coloni[i].Born(Coloni, Coloni[i]);
-                }
+                }*/
                 Coloni[i].Growing(Coloni[i]);
                 Coloni[i].RemoveBody(Coloni, Coloni[i]);
             }

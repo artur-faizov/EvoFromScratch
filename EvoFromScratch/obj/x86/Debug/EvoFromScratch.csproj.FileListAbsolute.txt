@@ -3,3 +3,8 @@ C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\bin\Debug\EvoFromScratch.pd
 C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.exe
 C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.pdb
 C:\Users\Artur\Desktop\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.csprojResolveAssemblyReference.cache
+F:\C#\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.exe
+F:\C#\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.pdb
+F:\C#\EvoFromScratch\EvoFromScratch\bin\Debug\EvoFromScratch.exe
+F:\C#\EvoFromScratch\EvoFromScratch\bin\Debug\EvoFromScratch.pdb
+F:\C#\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.csprojResolveAssemblyReference.cache

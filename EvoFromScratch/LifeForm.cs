@@ -65,6 +65,16 @@ namespace EvoFromScratch
                 this.CurrentLocY = (float)NewY;
         }
 
+        public void MoveAngleChangeToTarget(LifeForm Currentlf, LifeForm Targetlf)
+        {
+            double MoveAngleShouldBe;
+            //MoveAngleShouldBe = Math.Atan((Targetlf.CurrentLocX - Currentlf.CurrentLocX) / (Targetlf.CurrentLocY - Currentlf.CurrentLocY));
+            MoveAngleShouldBe =  Math.Atan2((Targetlf.CurrentLocY - Currentlf.CurrentLocY), (Targetlf.CurrentLocX - Currentlf.CurrentLocX)) + Math.PI;
+            //Currentlf.MoveAngle += (float)(MoveAngleShouldBe - Currentlf.MoveAngle);
+            Currentlf.MoveAngle = (float)MoveAngleShouldBe;
+            Targetlf.MoveAngle = (float) (Math.PI - Currentlf.MoveAngle);
+        }
+
         public void Born(List<LifeForm> _Coloni, LifeForm lf)
         {
             TimeSpan T = DateTime.Now - lf.PregnantTime;
@@ -83,16 +93,18 @@ namespace EvoFromScratch
 
         public void Search(List<LifeForm> _Coloni, LifeForm lf)
         {
-            if (lf.Age > 15 && lf.IsPregnant != true && lf.IsAlive == true)
+            if (lf.Age > 1 /*&& lf.IsPregnant != true*/ && lf.IsAlive == true)
             {
                 foreach (LifeForm lf2 in _Coloni)
                 {
-                    if (lf2.Age > 15 && lf.ID != lf2.ID && lf2.IsPregnant != true
-                        && lf2.IsAlive == true && lf.Gender != lf2.Gender)
+                    if (lf2.Age > 1 && lf.ID != lf2.ID /*&& lf2.IsPregnant != true*/
+                        && lf2.IsAlive == true /*&& lf.Gender != lf2.Gender*/)
                     {
                         if (Math.Abs(lf.CurrentLocX - lf2.CurrentLocX) < 100 &&
                             Math.Abs(lf.CurrentLocY - lf2.CurrentLocY) < 100)
                         {
+                            lf.MoveAngleChangeToTarget(lf, lf2);
+                            lf.MoveAngleChangeToTarget(lf2, lf);
                             if (lf.Gender == 'F')
                             {
                                 lf.IsPregnant = true;
@@ -127,7 +139,7 @@ namespace EvoFromScratch
         public void Death (List<LifeForm> _Coloni, LifeForm lf)
         {
             TimeSpan T = DateTime.Now - lf.BornTime;
-            if ((T.TotalSeconds) > 25)
+            if ((T.TotalSeconds) > 525)
             {
                 lf.IsAlive = false;
             }

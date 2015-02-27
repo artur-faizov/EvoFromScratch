@@ -10,9 +10,9 @@ namespace EvoFromScratch
     {
         static public void Main()
         {
-            int Width = 1000;
-            int Hight = 700;
-            int LifeSpeed = 50;
+            int Width = 300;
+            int Hight = 300;
+            int LifeSpeed = 25;
             
             Application.Run(new MainForm(Width, Hight, LifeSpeed));
         }
