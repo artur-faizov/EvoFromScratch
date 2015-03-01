@@ -12,6 +12,7 @@ namespace EvoFromScratch
         public int Width_;
         public int Hight_;
         public int LifeSpeed;
+        static Params Par;
         
         public System.Windows.Forms.PictureBox PictureBox1;
         public System.Windows.Forms.Timer LifeTime;
@@ -19,15 +20,17 @@ namespace EvoFromScratch
 
         public List<LifeForm> Coloni = new List<LifeForm>();
        
-        public MainForm(int _Width, int _Hight, int _LifeSpeed)
+        public MainForm(Params _Par)
         {
-            this.Width_ = _Width;
-            this.Hight_ = _Hight;
+            Par = _Par;
+            this.Width_ = Par.Width;
+            this.Hight_ = Par.Hight;
+            
             
             //Moving Timer
             this.LifeTime = new System.Windows.Forms.Timer();
             this.LifeTime.Enabled = true;
-            this.LifeTime.Interval = (int) (2000/_LifeSpeed);
+            this.LifeTime.Interval = (int) (2000/Par.LifeSpeed);
             this.LifeTime.Tick += new System.EventHandler(this.LifeTime_Tick);
 
             //Growing Timer
@@ -41,7 +44,7 @@ namespace EvoFromScratch
             this.PictureBox1 = new System.Windows.Forms.PictureBox();
             this.PictureBox1.Location = new System.Drawing.Point(15, 15);
             this.PictureBox1.Name = "pictureBox1";
-            this.PictureBox1.Size = new System.Drawing.Size(_Width, _Hight);
+            this.PictureBox1.Size = new System.Drawing.Size(Par.Width, Par.Hight);
             //this.PictureBox1.TabIndex = 0;
             //this.PictureBox1.TabStop = false;
             // 
@@ -61,42 +64,39 @@ namespace EvoFromScratch
             //start coloni
             if (Coloni.Count == 0)
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < Par.StartColoniCount; i++)
                 {
-                    this.Coloni.Add(new LifeForm(Coloni, Width_, Hight_));
+                    this.Coloni.Add(new LifeForm(Coloni, Par));
                 } 
             }
 
-            //
             Draw DrawObject = new Draw(PictureBox1);
-            
 
-            for (int i = 0; i < Coloni.Count; i++)
+            foreach (LifeForm lf in Coloni)
             {
-
-                Coloni[i].Search(Coloni, Coloni[i]);
-
-                /*if (Coloni[i].IsPregnant == true)
-                {
-                    Coloni[i].Born(Coloni, Coloni[i]);
-                }*/
-                Coloni[i].Growing(Coloni[i]);
-                Coloni[i].RemoveBody(Coloni, Coloni[i]);
+                lf.Search(Coloni, lf);
+                lf.Sex(Coloni,lf);
             }
 
             foreach (LifeForm lf in Coloni)
             {
-                lf.Death(Coloni, lf);
-                if (lf.IsAlive == true)
-                {
-                    DrawObject.DrawLf(lf);
-                    lf.Move();
-                }
-                else
-                {
-                    DrawObject.DrawDeath(lf);
-                }
+                lf.Move();
+                lf.Growing(lf);
+                lf.Death(lf);
+                DrawObject.DrawLf(lf, Par);
             }
+            
+            for (int i = 0; i < Coloni.Count; i++)
+            {
+
+                if (Coloni[i].IsPregnant == true)
+                {
+                    Coloni[i].Born(Coloni, Coloni[i]);
+                }
+                Coloni[i].RemoveBody(Coloni, Coloni[i]);
+            }
+
+
 
         }
 

@@ -31,45 +31,52 @@ namespace EvoFromScratch
             this.PictureBox_ = _PictureBox;
         }
             
-        public void DrawLf (LifeForm _lf)
+        public void DrawLf (LifeForm _lf, Params Par)
         {
             Graphics g = Graphics.FromHwnd(PictureBox_.Handle);
-            if (_lf.Age < 15 && _lf.Gender == 'M')
+            if (_lf.IsAlive == true)
             {
-                g.DrawRectangle(ErasPenChiled, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                g.DrawRectangle(ChildMalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
-            }
-            else if (_lf.Age < 15 && _lf.Gender == 'F')
-            {
-                    g.DrawRectangle(ErasPenChiled, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                    g.DrawRectangle(ChildFemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
-            } 
-            else if (_lf.Gender == 'M')
-            {
-                    g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                    g.DrawRectangle(MalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
-            }
-            else if (_lf.Gender == 'F')
-            {
-                if (_lf.IsPregnant == true)
+                if (_lf.Age < Par.ChildAge)
                 {
-                    g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                    g.DrawRectangle(PregnantePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                    if (_lf.Gender == 'M')
+                    {
+                        g.DrawRectangle(ErasPenChiled, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                        g.DrawRectangle(ChildMalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                    }
+                    else
+                    {
+                        g.DrawRectangle(ErasPenChiled, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                        g.DrawRectangle(ChildFemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                    }
                 }
                 else
                 {
-                    g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
-                    g.DrawRectangle(FemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                    if (_lf.Gender == 'M')
+                    {
+                        g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                        g.DrawRectangle(MalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                    }
+                    else
+                    {
+                        if (_lf.IsPregnant == true)
+                        {
+                            g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                            g.DrawRectangle(PregnantePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                        }
+                        else
+                        {
+                            g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                            g.DrawRectangle(FemalePen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                        }
+                    }
                 }
             }
+            else
+            {
+                g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
+                g.DrawRectangle(ErasPenGrow, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
+                //g.DrawRectangle(DeathPen, _lf.CurrentLocY, _lf.CurrentLocX, 2, 2);
+            }
         }
-
-        public void DrawDeath(LifeForm _lf)
-        {
-            Graphics g = Graphics.FromHwnd(PictureBox_.Handle);
-            g.DrawRectangle(ErasPenGrow, _lf.OldLocX, _lf.OldLocY, 2, 2);
-            g.DrawRectangle(DeathPen, _lf.CurrentLocX, _lf.CurrentLocY, 2, 2);
-        }
-
     }
 }
