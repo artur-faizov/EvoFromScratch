@@ -40,7 +40,7 @@ namespace EvoFromScratch
             this.CurrentLocY = rnd.Next(0, Hight);
             this.TargetID = -1;
             this.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
-            this.MoveStep = 50/rnd.Next(5, 10);
+            this.MoveStep = 20/rnd.Next(5, 10);
             this.BornTime = DateTime.Now;
             this.PregnantTime = DateTime.Now;
             this.IsPregnant = false;
@@ -99,7 +99,7 @@ namespace EvoFromScratch
         {
             if (lf.TargetID >= Coloni.Count)
             {
-                lf.TargetID = -1;
+                DropTarget(lf);
             }
             if (lf.TargetID > -1 && 
                 lf.Distance(lf, Coloni[lf.TargetID]) < lf.ViewDistance &&
@@ -108,9 +108,9 @@ namespace EvoFromScratch
             {
                     lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
             }
-            else
+            else if (lf.TargetID > -1)
             {
-                    lf.TargetID = -1;
+                    DropTarget(lf);
             }
             
             if (lf.Age > Par.ChildAge && 
@@ -129,6 +129,7 @@ namespace EvoFromScratch
                         if (lf.Distance(lf,lf2) < lf.ViewDistance)
                         {
                             lf.TargetID = lf2.ID;
+                            lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
                             break;
                         }
                     }
@@ -139,8 +140,8 @@ namespace EvoFromScratch
         public void Sex(List<LifeForm> Coloni, LifeForm lf)
         {
             if (lf.TargetID >= Coloni.Count) 
-            { 
-                lf.TargetID = -1; 
+            {
+                lf.DropTarget(lf);
             }
             if (lf.TargetID > -1)
             {
@@ -159,10 +160,16 @@ namespace EvoFromScratch
                     }
                     lf.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
                     Coloni[lf.TargetID].MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
-                    Coloni[lf.TargetID].TargetID = -1;
-                    lf.TargetID = -1;
+                    DropTarget(Coloni[lf.TargetID]);
+                    DropTarget(lf);
                 }
             }
+        }
+
+        public void DropTarget (LifeForm lf)
+        {
+            lf.TargetID = -1;
+            lf.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
         }
 
         public float Distance(LifeForm lf1, LifeForm lf2)
