@@ -74,7 +74,7 @@ namespace EvoFromScratch
             Currentlf.MoveAngle = (float)(MoveAngleShouldBe);
         }
 
-        public int Born(List<LifeForm> _Coloni, LifeForm lf)
+        public int Born(List<LifeForm> _Coloni, LifeForm lf, Statistics Stat)
         {
             TimeSpan T = DateTime.Now - lf.PregnantTime;
             if ((T.TotalSeconds) >= Par.PregnantePeriod && lf.IsPregnant == true)
@@ -84,7 +84,10 @@ namespace EvoFromScratch
                 {
                     _Coloni.Add(new LifeForm(_Coloni, Par));
                     _Coloni[_Coloni.Count - 1].CurrentLocX = lf.CurrentLocX;
-                    _Coloni[_Coloni.Count - 1].CurrentLocY = lf.CurrentLocY; 
+                    _Coloni[_Coloni.Count - 1].CurrentLocY = lf.CurrentLocY;
+
+                    //update coloni statistic
+                    Stat.ColoniCount_plus(_Coloni[_Coloni.Count - 1]);
                 }
                 lf.IsPregnant = false;
                 return ChildCount;
@@ -176,12 +179,14 @@ namespace EvoFromScratch
             lf.Age = (int)T.TotalSeconds;
         }
 
-        public void Death (LifeForm lf)
+        public void Death (LifeForm lf, Statistics Stat)
         {
             TimeSpan T = DateTime.Now - lf.BornTime;
             if ((T.TotalSeconds) > Par.LifePeriod)
             {
+                if (lf.IsAlive == true) { Stat.ColoniCount_minus(lf); }
                 lf.IsAlive = false;
+                
             }
         }
 

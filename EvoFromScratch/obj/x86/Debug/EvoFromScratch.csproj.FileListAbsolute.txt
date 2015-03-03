@@ -8,3 +8,5 @@ F:\C#\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.pdb
 F:\C#\EvoFromScratch\EvoFromScratch\bin\Debug\EvoFromScratch.exe
 F:\C#\EvoFromScratch\EvoFromScratch\bin\Debug\EvoFromScratch.pdb
 F:\C#\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.csprojResolveAssemblyReference.cache
+F:\C#\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.MainForm.resources
+F:\C#\EvoFromScratch\EvoFromScratch\obj\x86\Debug\EvoFromScratch.csproj.GenerateResource.Cache
