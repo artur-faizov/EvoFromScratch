@@ -22,12 +22,12 @@ namespace EvoFromScratch
 
         public List<LifeForm> Coloni = new List<LifeForm>();
 
-        public TextBox StatisticBox_UpTime_Text;
         public TextBox StatisticBox_UpTime_Data;
-        public TextBox StatisticBox_Iteration_Text;
         public TextBox StatisticBox_Iteration_Data;
-        public TextBox StatisticBox_ColoniCount_Text;
         public TextBox StatisticBox_ColoniCount_Data;
+        public TextBox StatisticBox_MaleCount_Data;
+        public TextBox StatisticBox_FemaleCount_Data;
+        public TextBox StatisticBox_DeathCount_Data;
 
         public Statistics Stat;
        
@@ -56,37 +56,22 @@ namespace EvoFromScratch
             this.PictureBox1.Location = new System.Drawing.Point(5, 5);
             this.PictureBox1.Name = "pictureBox1";
             this.PictureBox1.Size = new System.Drawing.Size(Par.Width, Par.Hight);
-            //this.PictureBox1.BorderStyle = BorderStyle.Fixed3D;
-            //this.PictureBox1.TabIndex = 0;
-            //this.PictureBox1.TabStop = false;
+
             this.Name = "Evolution project";
             this.Text = "Evolution project";
             this.ClientSize = new System.Drawing.Size(Width_ + 10, Hight_ + 10);
             this.Controls.Add(this.PictureBox1);
 
-            StatisticBox_UpTime_Text = new TextBox();
-            StatisticBox_UpTime_Data = new TextBox();
-            StatisticBox_Iteration_Text = new TextBox();
-            StatisticBox_Iteration_Data = new TextBox();
-            StatisticBox_ColoniCount_Text = new TextBox();
-            StatisticBox_ColoniCount_Data = new TextBox();
-            FormatTextBox f = new FormatTextBox(this);
-            f.format(StatisticBox_UpTime_Text, StatisticBox_UpTime_Data, "Uptime:");
-            f.format(StatisticBox_Iteration_Text, StatisticBox_Iteration_Data, "Iteration:");
-            f.format(StatisticBox_ColoniCount_Text, StatisticBox_ColoniCount_Data, "ColoniCount:");
 
-            // Form1
-            // 
-            //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            
-            //this.Controls.Add(this.StatisticBox_ColoniCount_Text);
-            //this.Controls.Add(this.StatisticBox_ColoniCount_Data);
-            
+            FormatTextBox f = new FormatTextBox(this);
+            StatisticBox_UpTime_Data = f.format("Uptime:");
+            StatisticBox_Iteration_Data = f.format("Iteration:");
+            StatisticBox_ColoniCount_Data = f.format("ColoniCount:");
+            StatisticBox_MaleCount_Data = f.format("MaleCount:");
+            StatisticBox_FemaleCount_Data = f.format("FemaleCount:");
+            StatisticBox_DeathCount_Data = f.format("DeathCount:");
 
             this.ActiveControl = this.PictureBox1;
-
-            
 
             //Statistics Class object
             this.Stat = new Statistics();   
@@ -131,8 +116,6 @@ namespace EvoFromScratch
                 Coloni[i].RemoveBody(Coloni, Coloni[i]);
             }
 
-
-
         }
 
         public void GrowTime_Tick(Object sender, EventArgs e)
@@ -141,7 +124,9 @@ namespace EvoFromScratch
             this.StatisticBox_UpTime_Data.Text = Stat.Uptime.Hours.ToString() + '.' + Stat.Uptime.Minutes.ToString() + '.' + Stat.Uptime.Seconds.ToString();
             this.StatisticBox_Iteration_Data.Text = Stat.Iteration.ToString();
             this.StatisticBox_ColoniCount_Data.Text = Stat.ColoniCount.ToString();
-            //MessageBox.Show(Stat.Uptime.ToString());
+            this.StatisticBox_MaleCount_Data.Text = Stat.MaleCount.ToString();
+            this.StatisticBox_FemaleCount_Data.Text = Stat.FemaleCount.ToString();
+            this.StatisticBox_DeathCount_Data.Text = Stat.DeadLfCount.ToString();
         }
 
     }

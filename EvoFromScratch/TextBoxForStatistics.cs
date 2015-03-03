@@ -14,8 +14,10 @@ namespace EvoFromScratch
             Form = _Form;
         }
 
-        public void format (TextBox Text, TextBox Value, string Name)
+        public TextBox format (/*TextBox Text, TextBox Value,*/ string Name)
         {
+            TextBox Text = new TextBox();
+            TextBox Value = new TextBox();
             Text.Location = new System.Drawing.Point(Form.Width - 120, Form.StatisticLocY);
             Text.Name = "ColoniCount";
             Text.ShortcutsEnabled = true;
@@ -40,6 +42,8 @@ namespace EvoFromScratch
             Value.BringToFront();
 
             Form.StatisticLocY += 15;
+
+            return Value;
         }
     }
 }
