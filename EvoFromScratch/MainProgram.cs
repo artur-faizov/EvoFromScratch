@@ -17,8 +17,8 @@ namespace EvoFromScratch
             Par.LifeSpeed = 100;
             Par.LifePeriod = 35;
 
-            Par.StartColoniCount = 20;
-            Par.ChildAge = 5;
+            Par.StartColoniCount = 40;
+            Par.ChildAge = 2;
             Par.PregnantePeriod = 2;
             Par.SexDistance = 11;
             Par.BornAtOnce = 2;

@@ -51,6 +51,8 @@ namespace EvoFromScratch
             Par = _Par;
         }
 
+
+
         public void Move()
         {
             this.OldLocX = this.CurrentLocX;
@@ -95,7 +97,7 @@ namespace EvoFromScratch
             else return 0;
         }
 
-        public void Search(List<LifeForm> Coloni, LifeForm lf)
+        public void Search(List<LifeForm> Coloni, LifeForm lf, Order Order)
         {
             if (lf.TargetID >= Coloni.Count)
             {
@@ -112,8 +114,12 @@ namespace EvoFromScratch
             {
                     DropTarget(lf);
             }
+            if (lf.TargetID < 0)
+            {
+                Order.GetTarget(lf, Par);
+            }
             
-            if (lf.Age > Par.ChildAge && 
+/*            if (lf.Age > Par.ChildAge && 
                 lf.IsPregnant != true && 
                 lf.IsAlive == true &&
                 lf.TargetID  == -1)
@@ -134,7 +140,7 @@ namespace EvoFromScratch
                         }
                     }
                 }
-            }  
+            } */  
         }
 
         public void Sex(List<LifeForm> Coloni, LifeForm lf)

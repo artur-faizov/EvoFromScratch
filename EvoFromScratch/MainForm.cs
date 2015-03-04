@@ -20,7 +20,10 @@ namespace EvoFromScratch
         public System.Windows.Forms.Timer LifeTime;
         public System.Windows.Forms.Timer GrowTime;
 
+        
         public List<LifeForm> Coloni = new List<LifeForm>();
+
+        
 
         public TextBox StatisticBox_UpTime_Data;
         public TextBox StatisticBox_Iteration_Data;
@@ -30,7 +33,9 @@ namespace EvoFromScratch
         public TextBox StatisticBox_DeathCount_Data;
 
         public Statistics Stat;
-       
+
+        public Order CurrentOrder;
+
         public MainForm(Params _Par)
         {
             Par = _Par;
@@ -47,7 +52,7 @@ namespace EvoFromScratch
             //Growing Timer
             this.GrowTime = new System.Windows.Forms.Timer();
             this.GrowTime.Enabled = true;
-            this.GrowTime.Interval = 100;
+            this.GrowTime.Interval = 10000;
             this.GrowTime.Tick += new System.EventHandler(this.GrowTime_Tick);
 
             // pictureBox1
@@ -74,48 +79,36 @@ namespace EvoFromScratch
             this.ActiveControl = this.PictureBox1;
 
             //Statistics Class object
-            this.Stat = new Statistics();   
+            this.Stat = new Statistics();
+
+            this.CurrentOrder = new Order(Coloni);
         }
 
         public void LifeTime_Tick(Object sender, EventArgs e)
         {
             //start coloni
-            if (Coloni.Count == 0)
-            {
-                Stat.NewIteration();
-                for (int i = 0; i < Par.StartColoniCount; i++)
-                {
-                    this.Coloni.Add(new LifeForm(Coloni, Par));
-                    Stat.ColoniCount_plus(Coloni[i]);
-                } 
-            }
+            this.NewColoni(Coloni, Par,Stat);
 
             Draw DrawObject = new Draw(PictureBox1);
 
             foreach (LifeForm lf in Coloni)
             {
-                lf.Search(Coloni, lf);
-                lf.Sex(Coloni,lf);
-            }
-
-            foreach (LifeForm lf in Coloni)
-            {
-                lf.Move();
                 lf.Growing(lf);
+                lf.Search(Coloni, lf, CurrentOrder);
+                lf.Move();
+                lf.Sex(Coloni, lf);
                 lf.Death(lf, Stat);
+
                 DrawObject.DrawLf(lf, Par);
             }
-            
+
+            CurrentOrder.UpdateOrder(Coloni);
+
             for (int i = 0; i < Coloni.Count; i++)
             {
-
-                if (Coloni[i].IsPregnant == true)
-                {
-                    Coloni[i].Born(Coloni, Coloni[i], Stat);
-                }
+                Coloni[i].Born(Coloni, Coloni[i], Stat);
                 Coloni[i].RemoveBody(Coloni, Coloni[i]);
             }
-
         }
 
         public void GrowTime_Tick(Object sender, EventArgs e)
@@ -127,6 +120,19 @@ namespace EvoFromScratch
             this.StatisticBox_MaleCount_Data.Text = Stat.MaleCount.ToString();
             this.StatisticBox_FemaleCount_Data.Text = Stat.FemaleCount.ToString();
             this.StatisticBox_DeathCount_Data.Text = Stat.DeadLfCount.ToString();
+        }
+
+        public void NewColoni(List<LifeForm> Coloni, Params _Par, Statistics Stat)
+        {
+            if (Coloni.Count == 0)
+            {
+                Stat.NewIteration();
+                for (int i = 0; i < Par.StartColoniCount; i++)
+                {
+                    Coloni.Add(new LifeForm(Coloni, Par));
+                    Stat.ColoniCount_plus(Coloni[i]);
+                }
+            }
         }
 
     }
