@@ -52,7 +52,7 @@ namespace EvoFromScratch
             //Growing Timer
             this.GrowTime = new System.Windows.Forms.Timer();
             this.GrowTime.Enabled = true;
-            this.GrowTime.Interval = 10000;
+            this.GrowTime.Interval = 1000;
             this.GrowTime.Tick += new System.EventHandler(this.GrowTime_Tick);
 
             // pictureBox1

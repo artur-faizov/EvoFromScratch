@@ -33,6 +33,16 @@ namespace EvoFromScratch
         }
 
 
+        public bool CheckTarget(LifeForm lf1, Params Par)
+        {
+            if (lf1.Age > Par.ChildAge &&
+                lf1.IsPregnant != true &&
+                lf1.IsAlive == true &&
+                lf1.TargetID != -1)
+            { return true; }
+            else
+            { return false; }
+        }
         public bool CheckAtibility(LifeForm lf1, Params Par)
         {
             if (lf1.Age > Par.ChildAge &&
@@ -80,11 +90,13 @@ namespace EvoFromScratch
                     if (distance == -1)
                     {
                         distance = lf1.Distance(lf1,lf);
-                        lf1.TargetID = lf.ID;
+                        if (distance < lf1.ViewDistance)
+                            { lf1.TargetID = lf.ID; }
                     } else if (lf1.Distance(lf1,lf) < distance)
                     {
                         distance = lf1.Distance(lf1,lf);
-                        lf1.TargetID = lf.ID;
+                        if (distance < lf1.ViewDistance)
+                            { lf1.TargetID = lf.ID; }
                     }
                 }
             }
@@ -109,7 +121,7 @@ namespace EvoFromScratch
                 while (ChekNeibours(lf, i_InOrderX, i_InOrderY, delta, Par) != true) 
                 { 
                     delta++;
-                    if (delta > 5) { break; }
+                    if (delta > 1) { break; }
                 }
             }
         }

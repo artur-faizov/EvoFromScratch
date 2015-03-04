@@ -103,16 +103,13 @@ namespace EvoFromScratch
             {
                 DropTarget(lf);
             }
-            if (lf.TargetID > -1 && 
-                lf.Distance(lf, Coloni[lf.TargetID]) < lf.ViewDistance &&
-                Coloni[lf.TargetID].IsPregnant != true &&
-                Coloni[lf.TargetID].IsAlive == true)
+            if (Order.CheckTarget (lf, Par) == true)
             {
-                    lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
+                lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
             }
             else if (lf.TargetID > -1)
             {
-                    DropTarget(lf);
+                DropTarget(lf);
             }
             if (lf.TargetID < 0)
             {
