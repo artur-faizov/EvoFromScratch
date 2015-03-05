@@ -12,15 +12,15 @@ namespace EvoFromScratch
         {
             Params Par = new Params();
             Par.Width = 1000;
-            Par.Hight = 900;
+            Par.Hight = 700;
 
             Par.LifeSpeed = 100;
-            Par.LifePeriod = 35;
+            Par.LifePeriod = 10;
 
             Par.StartColoniCount = 40;
             Par.ChildAge = 2;
             Par.PregnantePeriod = 2;
-            Par.SexDistance = 11;
+            Par.SexDistance = 2;
             Par.BornAtOnce = 2;
             
 

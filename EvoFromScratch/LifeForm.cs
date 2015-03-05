@@ -55,18 +55,21 @@ namespace EvoFromScratch
 
         public void Move()
         {
-            this.OldLocX = this.CurrentLocX;
-            this.OldLocY = this.CurrentLocY;
-            double NewX = this.CurrentLocX + this.MoveStep * Math.Sin(this.MoveAngle);
-            double NewY = this.CurrentLocY + this.MoveStep * Math.Cos(this.MoveAngle);
-            while ((NewX < 0) || (NewX > this.Width) || (NewY < 0) || (NewY > this.Hight))
+            if (this.IsAlive == true)
             {
-                this.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
-                NewX = this.CurrentLocX + this.MoveStep * Math.Sin(this.MoveAngle);
-                NewY = this.CurrentLocY + this.MoveStep * Math.Cos(this.MoveAngle);
-            }
+                this.OldLocX = this.CurrentLocX;
+                this.OldLocY = this.CurrentLocY;
+                double NewX = this.CurrentLocX + this.MoveStep * Math.Sin(this.MoveAngle);
+                double NewY = this.CurrentLocY + this.MoveStep * Math.Cos(this.MoveAngle);
+                while ((NewX < 0) || (NewX > this.Width) || (NewY < 0) || (NewY > this.Hight))
+                {
+                    this.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
+                    NewX = this.CurrentLocX + this.MoveStep * Math.Sin(this.MoveAngle);
+                    NewY = this.CurrentLocY + this.MoveStep * Math.Cos(this.MoveAngle);
+                }
                 this.CurrentLocX = (float)NewX;
                 this.CurrentLocY = (float)NewY;
+            }
         }
 
         public void MoveAngleChangeToTarget(LifeForm Currentlf, LifeForm Targetlf)
@@ -103,7 +106,7 @@ namespace EvoFromScratch
             {
                 DropTarget(lf);
             }
-            if (Order.CheckTarget (lf, Par) == true)
+            if (Order.CheckTarget (lf, Coloni, Par) == true)
             {
                 lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
             }
@@ -113,7 +116,11 @@ namespace EvoFromScratch
             }
             if (lf.TargetID < 0)
             {
-                Order.GetTarget(lf, Par);
+                Order.GetTarget(lf, Coloni, Par);
+            }
+            if (Order.CheckTarget(lf, Coloni, Par) == true)
+            {
+                lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
             }
             
 /*            if (lf.Age > Par.ChildAge && 
@@ -142,10 +149,10 @@ namespace EvoFromScratch
 
         public void Sex(List<LifeForm> Coloni, LifeForm lf)
         {
-            if (lf.TargetID >= Coloni.Count) 
+            /*if (lf.TargetID >= Coloni.Count) 
             {
                 lf.DropTarget(lf);
-            }
+            }*/
             if (lf.TargetID > -1)
             {
                 
@@ -161,8 +168,8 @@ namespace EvoFromScratch
                         Coloni[lf.TargetID].IsPregnant = true;
                         Coloni[lf.TargetID].PregnantTime = DateTime.Now;
                     }
-                    lf.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
-                    Coloni[lf.TargetID].MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
+                    //lf.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
+                    //Coloni[lf.TargetID].MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
                     DropTarget(Coloni[lf.TargetID]);
                     DropTarget(lf);
                 }
@@ -200,9 +207,16 @@ namespace EvoFromScratch
             }
         }
 
-        public void RemoveBody(List<LifeForm> _Coloni, LifeForm lf)
+        public void RemoveBody(List<LifeForm> _Coloni)
         {
-            if (lf.IsAlive == false) { _Coloni.Remove(lf); }
+            for (int i = 0; i < _Coloni.Count; i++)
+            {
+                if (_Coloni[i].IsAlive == false)
+                {
+                    _Coloni.Remove(_Coloni[i]);
+                    i--;
+                }
+            }
         }
     }
 }

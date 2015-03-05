@@ -107,8 +107,17 @@ namespace EvoFromScratch
             for (int i = 0; i < Coloni.Count; i++)
             {
                 Coloni[i].Born(Coloni, Coloni[i], Stat);
-                Coloni[i].RemoveBody(Coloni, Coloni[i]);
             }
+
+            //Coloni[0].RemoveBody(Coloni);
+
+            /*foreach (LifeForm lf in Coloni)
+            {
+                if (lf.IsAlive == false )
+                {
+                    int m;
+                }
+            }*/
         }
 
         public void GrowTime_Tick(Object sender, EventArgs e)
