@@ -102,10 +102,10 @@ namespace EvoFromScratch
 
         public void Search(List<LifeForm> Coloni, LifeForm lf, Order Order)
         {
-            if (lf.TargetID >= Coloni.Count)
+            /*if (lf.TargetID >= Coloni.Count)
             {
                 DropTarget(lf);
-            }
+            }*/
             if (Order.CheckTarget (lf, Coloni, Par) == true)
             {
                 lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
@@ -123,36 +123,14 @@ namespace EvoFromScratch
                 lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
             }
             
-/*            if (lf.Age > Par.ChildAge && 
-                lf.IsPregnant != true && 
-                lf.IsAlive == true &&
-                lf.TargetID  == -1)
-            {
-                foreach (LifeForm lf2 in Coloni)
-                {
-                    if (lf2.Age > Par.ChildAge && 
-                        lf.ID != lf2.ID && 
-                        lf2.IsPregnant != true && 
-                        lf2.IsAlive == true && 
-                        lf.Gender != lf2.Gender)
-                    {
-                        if (lf.Distance(lf,lf2) < lf.ViewDistance)
-                        {
-                            lf.TargetID = lf2.ID;
-                            lf.MoveAngleChangeToTarget(lf, Coloni[lf.TargetID]);
-                            break;
-                        }
-                    }
-                }
-            } */  
         }
 
         public void Sex(List<LifeForm> Coloni, LifeForm lf)
         {
-            /*if (lf.TargetID >= Coloni.Count) 
+            if (lf.TargetID >= Coloni.Count) 
             {
                 lf.DropTarget(lf);
-            }*/
+            }
             if (lf.TargetID > -1)
             {
                 
@@ -209,14 +187,60 @@ namespace EvoFromScratch
 
         public void RemoveBody(List<LifeForm> _Coloni)
         {
+            List<LifeForm> ToDeleteList = new List<LifeForm>();
+            List<int> NewIDlist = new List<int>();
+            int DeleteCounter = 0;
             for (int i = 0; i < _Coloni.Count; i++)
             {
+
                 if (_Coloni[i].IsAlive == false)
                 {
-                    _Coloni.Remove(_Coloni[i]);
-                    i--;
+                    DeleteCounter++;
+                    ToDeleteList.Add(_Coloni[i]);
+                }
+                NewIDlist.Add ( i - DeleteCounter);
+            }
+
+            if (DeleteCounter > 0)
+            {
+
+                foreach (LifeForm lf in ToDeleteList)
+                {
+                    _Coloni.Remove(lf);
+                }
+
+                for (int i = 0; i < _Coloni.Count; i++)
+                {
+                    if (_Coloni[i].TargetID > -1)
+                    {
+                        //if (_Coloni[i].TargetID >= _Coloni.Count) 
+                        //{ 
+                        //    int x  = _Coloni[i].TargetID;
+                        //    _Coloni[i].TargetID = NewIDlist[_Coloni[i].TargetID];
+
+                        //}
+                        if (NewIDlist[_Coloni[i].TargetID] == -1)
+                        {
+                            DropTarget(_Coloni[i]);
+                        }
+                        else
+                        {
+                            _Coloni[i].TargetID = NewIDlist[_Coloni[i].TargetID];
+                        }
+                        if (_Coloni[i].TargetID >= _Coloni.Count)
+                        { int Achtung; }
+                    }
                 }
             }
+
+            //for (int i = 0; i < _Coloni.Count; i++)
+            //{
+            //    if (_Coloni[i].IsAlive == false)
+            //    {
+            //        _Coloni.Remove(_Coloni[i]);
+            //        i--;
+            //    }
+            //}
         }
     }
 }

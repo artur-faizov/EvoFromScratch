@@ -44,18 +44,20 @@ namespace EvoFromScratch
                 if (lf1.Distance (lf1, Coloni[lf1.TargetID]) < lf1.ViewDistance)
                 { return true; }
                 else
-                { lf1.TargetID = -1; return false ;}
+                { return false ;}
             }
             else
             { return false; }
         }
-        public bool CheckAtibility(LifeForm lf1, Params Par)
+        public bool CheckAtibility(LifeForm lf1, List<LifeForm> Coloni, Params Par)
         {
             if (lf1.Age > Par.ChildAge &&
                 lf1.IsPregnant != true &&
                 lf1.IsAlive == true &&
                 lf1.TargetID == -1)
             { return true; }
+            else if (lf1.TargetID > -1 && lf1.Distance(lf1, Coloni[lf1.TargetID]) > lf1.ViewDistance)
+            { lf1.TargetID = -1; return true; }
             else
             { return false; }
         }
@@ -112,19 +114,8 @@ namespace EvoFromScratch
         }
         public void GetTarget (LifeForm lf, List<LifeForm> Coloni, Params Par)
         {
-            if (CheckAtibility(lf, Par) == true)
+            if (CheckAtibility(lf, Coloni, Par) == true)
             {
-                if (lf.TargetID >= 0)
-                {
-                    if (lf.Distance(lf, Coloni[lf.TargetID]) < lf.ViewDistance)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        lf.TargetID = -1;
-                    }
-                }
 
                 int i_InOrderX = -1;
                 int i_InOrderY = -1;

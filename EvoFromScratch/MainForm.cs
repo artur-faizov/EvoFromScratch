@@ -96,6 +96,8 @@ namespace EvoFromScratch
                 lf.Growing(lf);
                 lf.Search(Coloni, lf, CurrentOrder);
                 lf.Move();
+               // if (lf.TargetID >= Coloni.Count)
+               // { LifeForm Achtung = lf; }
                 lf.Sex(Coloni, lf);
                 lf.Death(lf, Stat);
 
@@ -109,7 +111,7 @@ namespace EvoFromScratch
                 Coloni[i].Born(Coloni, Coloni[i], Stat);
             }
 
-            //Coloni[0].RemoveBody(Coloni);
+            Coloni[0].RemoveBody(Coloni);
 
             /*foreach (LifeForm lf in Coloni)
             {
