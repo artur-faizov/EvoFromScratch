@@ -16,18 +16,22 @@ namespace EvoFromScratch
 
         public void LifeTime_Tick(Object sender, EventArgs e)
         {
+            LifeForm lf = new LifeForm (Coloni, Par); 
+                       
+            this.NewColoni(Coloni, CurrentOrder, Par, Stat);           //create start coloni if coloni.count == 0
+            CurrentOrder.UpdateOrder(Coloni); //<<
 
-            this.NewColoni(Coloni, Par,Stat);           //create start coloni if coloni.count == 0
-            Coloni[0].Growing(Coloni);                  //growing for everybody
-            Coloni[0].Search(Coloni, CurrentOrder);     //search target to move
-            Coloni[0].Move(Coloni);
-            Coloni[0].Sex(Coloni);
-            Coloni[0].Death(Coloni, Stat);
+            lf.Growing(Coloni);                  //growing for everybody
+            lf.Search(Coloni, CurrentOrder);     //search target to move
+            lf.Move(Coloni);
+            CurrentOrder.UpdateOrder(Coloni); //<<
+
+            lf.Sex(Coloni);
+            lf.Death(Coloni, Stat);
             DrawObject.DrawLf(Coloni, Par);
-
-            CurrentOrder.UpdateOrder(Coloni);
-            Coloni[0].RemoveBody(Coloni);
-            Coloni[0].Born(Coloni, Stat);
+            lf.RemoveBody(Coloni);
+            CurrentOrder.UpdateOrder(Coloni); //<<
+            lf.Born(Coloni, Stat);
         }
 
         public void GrowTime_Tick(Object sender, EventArgs e)
@@ -41,7 +45,7 @@ namespace EvoFromScratch
             this.StatisticBox_DeathCount_Data.Text = Stat.DeadLfCount.ToString();
         }
 
-        public void NewColoni(List<LifeForm> Coloni, Params _Par, Statistics Stat)
+        public void NewColoni(List<LifeForm> Coloni, Order Order, Params _Par, Statistics Stat)
         {
             if (Coloni.Count == 0)
             {
@@ -51,6 +55,9 @@ namespace EvoFromScratch
                     Coloni.Add(new LifeForm(Coloni, Par));
                     Stat.ColoniCount_plus(Coloni[i]);
                 }
+
+                Order.UpdateOrder(Coloni);
+
             }
         }
 

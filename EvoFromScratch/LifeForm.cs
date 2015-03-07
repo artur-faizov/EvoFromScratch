@@ -40,7 +40,7 @@ namespace EvoFromScratch
             this.CurrentLocY = rnd.Next(0, Hight);
             this.TargetID = -1;
             this.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
-            this.MoveStep = 20/rnd.Next(5, 10);
+            this.MoveStep = 10/rnd.Next(5, 10);
             this.BornTime = DateTime.Now;
             this.PregnantTime = DateTime.Now;
             this.IsPregnant = false;
@@ -51,8 +51,38 @@ namespace EvoFromScratch
             Par = _Par;
         }
 
+        public void Growing(List<LifeForm> Coloni)
+        {
+            foreach (LifeForm lf in Coloni)
+            {
+                TimeSpan T = DateTime.Now - lf.BornTime;
+                lf.Age = (int)T.TotalSeconds;
+            }
+        }
 
+        public void Search(List<LifeForm> Coloni, Order Order)
+        {
+            foreach (LifeForm lf in Coloni)
+            {
+                Order.CheckDistance(lf, Coloni, Par);
+                Order.GetTarget(lf, Coloni, Par);
+                lf.MoveAngleChangeToTarget(lf, Coloni, Par, Order);
+            }
+        }
 
+        public void MoveAngleChangeToTarget(LifeForm Currentlf, List<LifeForm> _Coloni, Params Par, Order Order)
+        {
+            if (Order.CheckNeedNewAngle(Currentlf, Par) == true)
+            {
+                double MoveAngleShouldBe;
+                LifeForm Targetlf;
+                Targetlf = _Coloni[Currentlf.TargetID];
+                MoveAngleShouldBe = Math.Atan2((Targetlf.CurrentLocX - Currentlf.CurrentLocX), (Targetlf.CurrentLocY - Currentlf.CurrentLocY));
+                Currentlf.MoveAngle = (float)(MoveAngleShouldBe);
+            }
+        }        
+        
+        
         public void Move(List<LifeForm> Coloni)
         {
             foreach (LifeForm lf in Coloni)
@@ -75,19 +105,7 @@ namespace EvoFromScratch
             }
         }
 
-        public void MoveAngleChangeToTarget(LifeForm Currentlf, List<LifeForm> Coloni)
-        {
-            double MoveAngleShouldBe;
-            LifeForm Targetlf;
-            if (Currentlf.TargetID > -1)
-            {
-                Targetlf = Coloni[Currentlf.TargetID];
-            }
-            else
-            { return; }
-            MoveAngleShouldBe =  Math.Atan2((Targetlf.CurrentLocX - Currentlf.CurrentLocX), (Targetlf.CurrentLocY - Currentlf.CurrentLocY));
-            Currentlf.MoveAngle = (float)(MoveAngleShouldBe);
-        }
+
 
         public void Born(List<LifeForm> _Coloni, Statistics Stat)
         {
@@ -108,30 +126,19 @@ namespace EvoFromScratch
                         Stat.ColoniCount_plus(_Coloni[_Coloni.Count - 1]);
                     }
                     lf.IsPregnant = false;
-                    //return ChildCount;
+
                 }
-                //else return 0;
+
             }
         }
 
-        public void Search(List<LifeForm> Coloni, Order Order)
-        {
-            foreach (LifeForm lf in Coloni)
-            {
-                Order.CheckTarget(lf, Coloni, Par);
-                Order.GetTarget(lf, Coloni, Par);
-                lf.MoveAngleChangeToTarget(lf, Coloni);
-            }
-        }
+
 
         public void Sex(List<LifeForm> Coloni)
         {
             foreach (LifeForm lf in Coloni)
             {
-                if (lf.TargetID >= Coloni.Count)
-                {
-                    lf.DropTarget(lf);
-                }
+
                 if (lf.TargetID > -1)
                 {
 
@@ -142,13 +149,12 @@ namespace EvoFromScratch
                             lf.IsPregnant = true;
                             lf.PregnantTime = DateTime.Now;
                         }
-                        else
+                        else if (Coloni[lf.TargetID].Gender == 'F')
                         {
                             Coloni[lf.TargetID].IsPregnant = true;
                             Coloni[lf.TargetID].PregnantTime = DateTime.Now;
                         }
-                        //lf.MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
-                        //Coloni[lf.TargetID].MoveAngle = (float)(rnd.Next(0, 360) * Math.PI / 180);
+
                         DropTarget(Coloni[lf.TargetID]);
                         DropTarget(lf);
                     }
@@ -170,14 +176,7 @@ namespace EvoFromScratch
             return(Distance);
         }
 
-        public void Growing(List<LifeForm> Coloni)
-        {
-            foreach (LifeForm lf in Coloni)
-            {
-                TimeSpan T = DateTime.Now - lf.BornTime;
-                lf.Age = (int)T.TotalSeconds;
-            }
-        }
+
 
         public void Death (List<LifeForm> Coloni, Statistics Stat)
         {
@@ -188,15 +187,12 @@ namespace EvoFromScratch
                 {
                     if (lf.IsAlive == true) { Stat.ColoniCount_minus(lf); }
                     lf.IsAlive = false;
-
                 }
             }
         }
 
         public void RemoveBody(List<LifeForm> _Coloni)
         {
-            
-
             List<LifeForm> ToDeleteList = new List<LifeForm>();
             List<int> NewIDlist = new List<int>();
             int DeleteCounter = 0;
@@ -207,8 +203,12 @@ namespace EvoFromScratch
                 {
                     DeleteCounter++;
                     ToDeleteList.Add(_Coloni[i]);
+                    NewIDlist.Add(-1);
                 }
-                NewIDlist.Add ( i - DeleteCounter);
+                else
+                {
+                    NewIDlist.Add(i - DeleteCounter);
+                }
             }
 
             if (DeleteCounter > 0)
@@ -222,40 +222,21 @@ namespace EvoFromScratch
 
                 for (int i = 0; i < _Coloni.Count; i++)
                 {
+                    _Coloni[i].ID = NewIDlist[i];
                     if (_Coloni[i].TargetID > -1)
                     {
-                        //if (_Coloni[i].TargetID >= _Coloni.Count) 
-                        //{ 
-                        //    int x  = _Coloni[i].TargetID;
-                        //    _Coloni[i].TargetID = NewIDlist[_Coloni[i].TargetID];
-
-                        //}
-                        //if (NewIDlist[_Coloni[i].TargetID] == -1)
-                        //{
-                            //DropTarget(_Coloni[i]);
-                        //}
-                        //else
-                        //{
-                        _Coloni[i].ID = NewIDlist[i];    
                         _Coloni[i].TargetID = NewIDlist[_Coloni[i].TargetID];
-                        //}
-                        if (_Coloni[i].TargetID >= _Coloni.Count)
-                        { int Achtung; }
                     }
                 }
+
+
+
                 List<int> M = NewIDlist;
                 List<LifeForm> Y = ToDeleteList;
                 List<LifeForm> C = _Coloni;
+
             }
 
-            //for (int i = 0; i < _Coloni.Count; i++)
-            //{
-            //    if (_Coloni[i].IsAlive == false)
-            //    {
-            //        _Coloni.Remove(_Coloni[i]);
-            //        i--;
-            //    }
-            //}
         }
     }
 }
