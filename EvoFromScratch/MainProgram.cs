@@ -19,7 +19,7 @@ namespace EvoFromScratch
 
             Par.StartColoniCount = 40;
             Par.ChildAge = 2;
-            Par.PregnantePeriod = 2;
+            Par.PregnantePeriod = 1;
             Par.SexDistance = 2;
             Par.BornAtOnce = 2;
             

@@ -35,16 +35,12 @@ namespace EvoFromScratch
 
         public bool CheckTarget(LifeForm lf1, List<LifeForm> Coloni,Params Par)
         {
-            if (lf1.Age > Par.ChildAge &&
-                lf1.IsPregnant != true &&
-                lf1.IsAlive == true &&
-                lf1.TargetID != -1 &&
-                lf1.TargetID < Coloni.Count)
+            if (lf1.TargetID > -1 )
             {
                 if (lf1.Distance (lf1, Coloni[lf1.TargetID]) < lf1.ViewDistance)
                 { return true; }
                 else
-                { return false ;}
+                { lf1.TargetID = -1;  return false; }
             }
             else
             { return false; }
